@@ -1,0 +1,47 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "PackageStructure": ["<PackageStructure>"]
+  "RAMMonitor-arm64-apple-macosx26.0-debug.module": ["<RAMMonitor-arm64-apple-macosx26.0-debug.module>"]
+  "main": ["<RAMMonitor-arm64-apple-macosx26.0-debug.module>"]
+  "test": ["<RAMMonitor-arm64-apple-macosx26.0-debug.module>"]
+default: "main"
+nodes:
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryInfo.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryViewModel.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MenuBarView.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/PieChartView.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/ProcessInfo.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/RAMMonitorApp.swift"]
+    outputs: ["/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/sources"]
+    description: "Write auxiliary file /Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/sources"
+
+  "/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
+    outputs: ["/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<RAMMonitor-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/Modules/RAMMonitor.swiftmodule"]
+    outputs: ["<RAMMonitor-arm64-apple-macosx26.0-debug.module>"]
+
+  "C.RAMMonitor-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryInfo.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryViewModel.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MenuBarView.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/PieChartView.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/ProcessInfo.swift","/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/RAMMonitorApp.swift","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/sources"]
+    outputs: ["/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/Modules/RAMMonitor.swiftmodule"]
+    description: "Compiling Swift Module 'RAMMonitor' (6 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","RAMMonitor","-emit-dependencies","-emit-module","-emit-module-path","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/Modules/RAMMonitor.swiftmodule","-output-file-map","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/output-file-map.json","-incremental","@/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/RAMMonitor.build/sources","-I","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx14.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-Onone","-enable-testing","-j18","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/joey-mbp-16/RAMMonitor/.build/index-build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","RAMMonitor_main","-swift-version","5","-Xfrontend","-experimental-lazy-typecheck","-Xfrontend","-experimental-skip-all-function-bodies","-Xfrontend","-experimental-allow-module-with-compiler-errors","-Xfrontend","-empty-abi-descriptor","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","rammonitor"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/","/Users/joey-mbp-16/RAMMonitor/Package.swift","/Users/joey-mbp-16/RAMMonitor/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

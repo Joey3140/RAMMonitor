@@ -1,0 +1,47 @@
+{
+  "": {
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/master.swiftdeps"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryInfo.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryInfo.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryInfo.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryInfo.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryInfo.dia"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MemoryViewModel.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryViewModel.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryViewModel.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryViewModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryViewModel.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MemoryViewModel.dia"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/MenuBarView.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MenuBarView.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MenuBarView.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MenuBarView~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MenuBarView.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/MenuBarView.dia"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/PieChartView.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/PieChartView.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/PieChartView.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/PieChartView~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/PieChartView.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/PieChartView.dia"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/ProcessInfo.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/ProcessInfo.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/ProcessInfo.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/ProcessInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/ProcessInfo.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/ProcessInfo.dia"
+  },
+  "/Users/joey-mbp-16/RAMMonitor/Sources/RAMMonitor/RAMMonitorApp.swift": {
+    "dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/RAMMonitorApp.d",
+    "object": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/RAMMonitorApp.swift.o",
+    "swiftmodule": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/RAMMonitorApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/RAMMonitorApp.swiftdeps",
+    "diagnostics": "/Users/joey-mbp-16/RAMMonitor/.build/arm64-apple-macosx/debug/RAMMonitor.build/RAMMonitorApp.dia"
+  }
+}

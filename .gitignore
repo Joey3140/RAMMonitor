@@ -6,5 +6,4 @@ DerivedData/
 .swiftpm/xcode/
 Package.resolved
 .DS_Store
-.env
 *.app/

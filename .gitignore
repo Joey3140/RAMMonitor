@@ -21,7 +21,6 @@ dashboard.html
 .husky/
 .ai-codex/
 .harness-version
-harness-config.json
 codex-config.json
 dashboard.html
 *.pre-harness

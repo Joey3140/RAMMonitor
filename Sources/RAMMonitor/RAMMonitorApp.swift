@@ -7,6 +7,8 @@ struct RAMMonitorApp: App {
     var body: some Scene {
         MenuBarExtra {
             MenuBarView(memoryInfo: viewModel.memoryInfo, topProcesses: viewModel.topProcesses)
+                .onAppear { viewModel.menuOpened() }
+                .onDisappear { viewModel.menuClosed() }
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "memorychip")

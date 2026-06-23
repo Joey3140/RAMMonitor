@@ -27,6 +27,7 @@ struct ProcessMemoryInfo: Identifiable {
         guard actualCount > 0 else { return [] }
 
         var processes: [ProcessMemoryInfo] = []
+        var indexByName: [String: Int] = [:]   // O(1) name->index for the merge below
         let taskInfoSize = Int32(MemoryLayout<proc_taskinfo>.stride)
 
         for i in 0..<Int(actualCount) {
@@ -49,7 +50,7 @@ struct ProcessMemoryInfo: Identifiable {
             if memory < 1_048_576 { continue }  // skip < 1MB
 
             // Merge processes with same name (e.g., multiple Chrome helpers)
-            if let idx = processes.firstIndex(where: { $0.name == name }) {
+            if let idx = indexByName[name] {
                 let existing = processes[idx]
                 processes[idx] = ProcessMemoryInfo(
                     id: existing.id,
@@ -57,6 +58,7 @@ struct ProcessMemoryInfo: Identifiable {
                     memory: existing.memory + memory
                 )
             } else {
+                indexByName[name] = processes.count
                 processes.append(ProcessMemoryInfo(id: pid, name: name, memory: memory))
             }
         }

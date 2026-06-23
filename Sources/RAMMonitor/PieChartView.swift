@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct MemorySlice: Identifiable {
-    let id = UUID()
+    var id: String { name }   // stable identity so Swift Charts diffs the 5 sectors instead of rebuilding every render
     let name: String
     let value: Double
     let color: Color

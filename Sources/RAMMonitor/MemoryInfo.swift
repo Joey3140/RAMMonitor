@@ -31,9 +31,13 @@ struct MemoryInfo {
             MemoryLayout<vm_statistics64>.stride / MemoryLayout<integer_t>.stride
         )
 
+        // Balance the send right that mach_host_self() adds to the host port —
+        // otherwise its user-reference count climbs once per call (every 3s) forever.
+        let host = mach_host_self()
+        defer { mach_port_deallocate(mach_task_self_, host) }
         let result = withUnsafeMutablePointer(to: &stats) { ptr in
             ptr.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { intPtr in
-                host_statistics64(mach_host_self(), HOST_VM_INFO64, intPtr, &count)
+                host_statistics64(host, HOST_VM_INFO64, intPtr, &count)
             }
         }
 

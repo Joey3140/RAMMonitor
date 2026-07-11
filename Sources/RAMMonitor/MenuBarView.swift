@@ -149,37 +149,22 @@ struct MenuBarView: View {
                 }
 
             case "Wired":
-                Text("System processes locking this RAM:")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                let systemProcs = topProcesses.filter { isSystemProcess($0.name) }
-                if systemProcs.isEmpty {
-                    Text("Wired memory is held by the macOS kernel, drivers, and low-level system services that don't appear as named processes.")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                        .fixedSize(horizontal: false, vertical: true)
-                } else {
-                    ForEach(systemProcs.prefix(8)) { process in
-                        processRow(process)
-                    }
-                }
-
-            case "Compressed":
-                Text("Apps whose inactive pages are compressed:")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                ForEach(topProcesses.prefix(8)) { process in
-                    processRow(process)
-                }
-
-            case "Cached Files":
-                Text("File-backed and purgeable data cached in RAM — macOS reclaims this instantly when apps need more memory:")
+                Text("Wired memory is held by the macOS kernel, drivers, and low-level system services — it can't be attributed to the apps listed here.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                ForEach(topProcesses.prefix(5)) { process in
-                    processRow(process)
-                }
+
+            case "Compressed":
+                Text("Inactive data macOS has squeezed in RAM to make room — it expands automatically when its app needs it. Per-app compressed amounts aren't visible to a monitoring app.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+            case "Cached Files":
+                Text("File-backed and purgeable data cached in RAM — macOS reclaims this instantly when apps need more memory. It isn't attributable to individual apps.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
 
             case "Free":
                 Text("No apps are using this memory — it's completely available for new tasks.")
@@ -206,13 +191,6 @@ struct MenuBarView: View {
                 .font(.caption.monospacedDigit())
                 .foregroundStyle(.secondary)
         }
-    }
-
-    private func isSystemProcess(_ name: String) -> Bool {
-        let systemNames = ["kernel_task", "WindowServer", "mds", "mds_stores",
-                           "launchd", "logd", "opendirectoryd", "syslogd",
-                           "configd", "bluetoothd", "airportd", "diskarbitrationd"]
-        return systemNames.contains(name) || name.hasSuffix("d") && name.count < 16
     }
 
     private func legendRow(_ name: String, bytes: UInt64, color: Color, tooltip: String) -> some View {

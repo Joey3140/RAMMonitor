@@ -1,10 +1,10 @@
 {
   "project": {
-    "name": "",
+    "name": "RAMMonitor",
     "techStack": [],
-    "testCommand": "npm test",
-    "lintCommand": "npm run lint",
-    "buildCommand": "npm run build",
+    "testCommand": "",
+    "lintCommand": "",
+    "buildCommand": "bash bundle.sh",
     "mainBranch": "main",
     "devBranch": "development",
     "description": "Native macOS menu-bar memory monitor. Live percentage; popover with donut breakdown of App/Wired/Compressed/Cached/Free and top processes per slice."

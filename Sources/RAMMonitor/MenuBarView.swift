@@ -57,15 +57,16 @@ struct MenuBarView: View {
 
                 // Legend
                 VStack(spacing: 6) {
-                    legendRow("App Memory", bytes: memoryInfo.appMemory, color: .blue,
+                    let percents = legendPercents
+                    legendRow("App Memory", bytes: memoryInfo.appMemory, percent: percents[0], color: .blue,
                               tooltip: "RAM currently in use by apps and processes — excludes purgeable caches")
-                    legendRow("Wired", bytes: memoryInfo.wired, color: .red,
+                    legendRow("Wired", bytes: memoryInfo.wired, percent: percents[1], color: .red,
                               tooltip: "RAM reserved by the system (macOS kernel, drivers) — cannot be freed or compressed")
-                    legendRow("Compressed", bytes: memoryInfo.compressed, color: .orange,
+                    legendRow("Compressed", bytes: memoryInfo.compressed, percent: percents[2], color: .orange,
                               tooltip: "Inactive data squeezed in RAM to make room, without writing to disk — fast to decompress when needed")
-                    legendRow("Cached Files", bytes: memoryInfo.cached, color: .yellow,
+                    legendRow("Cached Files", bytes: memoryInfo.cached, percent: percents[3], color: .yellow,
                               tooltip: "File-backed and purgeable data kept in RAM as cache — can be reclaimed instantly if an app needs more memory")
-                    legendRow("Free", bytes: memoryInfo.free, color: .green,
+                    legendRow("Free", bytes: memoryInfo.free, percent: percents[4], color: .green,
                               tooltip: "Completely unused RAM available immediately")
                 }
 
@@ -126,7 +127,7 @@ struct MenuBarView: View {
                 Circle()
                     .fill(categoryColor)
                     .frame(width: 8, height: 8)
-                Text("\(category) Memory")
+                Text(category)
                     .font(.subheadline.weight(.semibold))
                 Spacer()
                 Button {
@@ -193,7 +194,28 @@ struct MenuBarView: View {
         }
     }
 
-    private func legendRow(_ name: String, bytes: UInt64, color: Color, tooltip: String) -> some View {
+    /// Integer percentages for the five legend rows, in display order.
+    /// Largest-remainder rounding over the category sum so they total exactly 100
+    /// (independent rounding could show 99 or 101).
+    private var legendPercents: [Int] {
+        let values = [memoryInfo.appMemory, memoryInfo.wired, memoryInfo.compressed,
+                      memoryInfo.cached, memoryInfo.free]
+        let total = Double(values.reduce(0, +))
+        guard total > 0 else { return Array(repeating: 0, count: values.count) }
+        let exact = values.map { Double($0) / total * 100 }
+        var percents = exact.map { Int($0.rounded(.down)) }
+        var leftover = 100 - percents.reduce(0, +)
+        for i in exact.indices.sorted(by: {
+            exact[$0] - exact[$0].rounded(.down) > exact[$1] - exact[$1].rounded(.down)
+        }) {
+            guard leftover > 0 else { break }
+            percents[i] += 1
+            leftover -= 1
+        }
+        return percents
+    }
+
+    private func legendRow(_ name: String, bytes: UInt64, percent: Int, color: Color, tooltip: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
                 Circle()
@@ -213,7 +235,7 @@ struct MenuBarView: View {
                 Text(String(format: "%.2f GB", memoryInfo.gigabytes(bytes)))
                     .font(.callout.monospacedDigit())
                     .foregroundStyle(.secondary)
-                Text(String(format: "(%d%%)", Int((Double(bytes) / Double(memoryInfo.total) * 100).rounded())))
+                Text(String(format: "(%d%%)", percent))
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.tertiary)
                     .frame(width: 40, alignment: .trailing)

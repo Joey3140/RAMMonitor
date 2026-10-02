@@ -7,9 +7,10 @@ swift build -c release 2>&1
 APP="RAMMonitor.app"
 BUNDLE_ID="com.local.RAMMonitor"
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp .build/release/RAMMonitor "$APP/Contents/MacOS/RAMMonitor"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
+cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
 # Sign with a STABLE Developer ID so TCC permissions persist across rebuilds
 # (ad-hoc signatures change identity every build and reset consent).

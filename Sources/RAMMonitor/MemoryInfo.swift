@@ -25,7 +25,9 @@ struct MemoryInfo {
         Double(bytes) / (1024 * 1024 * 1024)
     }
 
-    static func current() -> MemoryInfo {
+    /// nil when the mach call fails — callers keep their last good reading
+    /// instead of displaying a bogus all-free snapshot.
+    static func current() -> MemoryInfo? {
         var stats = vm_statistics64()
         var count = mach_msg_type_number_t(
             MemoryLayout<vm_statistics64>.stride / MemoryLayout<integer_t>.stride
@@ -43,12 +45,7 @@ struct MemoryInfo {
 
         let total = ProcessInfo.processInfo.physicalMemory
 
-        guard result == KERN_SUCCESS else {
-            return MemoryInfo(
-                appMemory: 0, wired: 0, compressed: 0,
-                cached: 0, free: total, total: total
-            )
-        }
+        guard result == KERN_SUCCESS else { return nil }
 
         let pageSize = UInt64(vm_kernel_page_size)
         let internalPages = UInt64(stats.internal_page_count) * pageSize

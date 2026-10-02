@@ -22,13 +22,13 @@ struct PieChartView: View {
         ]
     }
 
-    private func findCategory(at location: CGPoint, in size: CGSize) -> String? {
-        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+    private func findCategory(at location: CGPoint, in plot: CGRect) -> String? {
+        let center = CGPoint(x: plot.midX, y: plot.midY)
         let dx = location.x - center.x
         let dy = location.y - center.y
 
         let distance = sqrt(dx * dx + dy * dy)
-        let outerRadius = min(size.width, size.height) / 2
+        let outerRadius = min(plot.width, plot.height) / 2
         let innerRadius = outerRadius * 0.55
         guard distance >= innerRadius && distance <= outerRadius else { return nil }
 
@@ -38,6 +38,7 @@ struct PieChartView: View {
         let fraction = angle / (2 * .pi)
 
         let total = slices.reduce(0.0) { $0 + $1.value }
+        guard total > 0 else { return nil }
         var cumulative = 0.0
         for slice in slices {
             cumulative += slice.value / total
@@ -61,10 +62,18 @@ struct PieChartView: View {
         }
         .chartLegend(.hidden)
         .frame(width: 180, height: 180)
-        .contentShape(Circle())
-        .onTapGesture { location in
-            let tapped = findCategory(at: location, in: CGSize(width: 180, height: 180))
-            selectedCategory = selectedCategory == tapped ? nil : tapped
+        .chartOverlay { proxy in
+            GeometryReader { geo in
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture { location in
+                        // Hit-test against the chart's actual plot rect — Swift
+                        // Charts insets it, so 180x180 was slightly off at the rim.
+                        guard let plotAnchor = proxy.plotFrame else { return }
+                        let tapped = findCategory(at: location, in: geo[plotAnchor])
+                        selectedCategory = selectedCategory == tapped ? nil : tapped
+                    }
+            }
         }
     }
 }

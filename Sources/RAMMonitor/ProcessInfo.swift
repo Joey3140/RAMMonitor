@@ -2,7 +2,7 @@ import Foundation
 import Darwin
 
 struct ProcessMemoryInfo: Identifiable {
-    let id: pid_t
+    var id: String { name }  // name is the merge key — stable across refreshes, unlike pids
     let name: String
     let memory: UInt64  // bytes (phys_footprint — same metric as Activity Monitor's Memory column)
 
@@ -80,15 +80,13 @@ struct ProcessMemoryInfo: Identifiable {
 
             // Merge processes with same name (e.g., multiple Chrome helpers)
             if let idx = indexByName[name] {
-                let existing = processes[idx]
                 processes[idx] = ProcessMemoryInfo(
-                    id: existing.id,
                     name: name,
-                    memory: existing.memory + memory
+                    memory: processes[idx].memory + memory
                 )
             } else {
                 indexByName[name] = processes.count
-                processes.append(ProcessMemoryInfo(id: pid, name: name, memory: memory))
+                processes.append(ProcessMemoryInfo(name: name, memory: memory))
             }
         }
 

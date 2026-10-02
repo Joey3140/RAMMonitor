@@ -52,3 +52,7 @@ project/tickets/
 .env.*
 .env.local
 .env.*.local
+
+# Icon intermediates — regenerate with `swift icon.swift`, then sips + iconutil
+icon_1024.png
+AppIcon.iconset/

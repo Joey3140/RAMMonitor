@@ -48,12 +48,21 @@ struct MemoryInfo {
         guard result == KERN_SUCCESS else { return nil }
 
         let pageSize = UInt64(vm_kernel_page_size)
-        let internalPages = UInt64(stats.internal_page_count) * pageSize
-        let purgeable = UInt64(stats.purgeable_count) * pageSize
-        let externalPages = UInt64(stats.external_page_count) * pageSize
-        let wired = UInt64(stats.wire_count) * pageSize
-        let compressed = UInt64(stats.compressor_page_count) * pageSize
+        return from(
+            internalBytes: UInt64(stats.internal_page_count) * pageSize,
+            purgeableBytes: UInt64(stats.purgeable_count) * pageSize,
+            externalBytes: UInt64(stats.external_page_count) * pageSize,
+            wiredBytes: UInt64(stats.wire_count) * pageSize,
+            compressedBytes: UInt64(stats.compressor_page_count) * pageSize,
+            total: total
+        )
+    }
 
+    /// The Activity Monitor-style split of the VM counters (in bytes), apart from
+    /// the mach call so it can be tested.
+    static func from(internalBytes internalPages: UInt64, purgeableBytes purgeable: UInt64,
+                     externalBytes externalPages: UInt64, wiredBytes wired: UInt64,
+                     compressedBytes compressed: UInt64, total: UInt64) -> MemoryInfo {
         let appMemory = internalPages > purgeable ? internalPages - purgeable : 0
         let cached = purgeable + externalPages
         let used = appMemory + wired + compressed
@@ -67,5 +76,25 @@ struct MemoryInfo {
             free: free,
             total: total
         )
+    }
+
+    /// Integer percentages for the five legend rows, in display order.
+    /// Largest-remainder rounding over the category sum so they total exactly 100
+    /// (independent rounding could show 99 or 101).
+    var legendPercents: [Int] {
+        let values = [appMemory, wired, compressed, cached, free]
+        let total = Double(values.reduce(0, +))
+        guard total > 0 else { return Array(repeating: 0, count: values.count) }
+        let exact = values.map { Double($0) / total * 100 }
+        var percents = exact.map { Int($0.rounded(.down)) }
+        var leftover = 100 - percents.reduce(0, +)
+        for i in exact.indices.sorted(by: {
+            exact[$0] - exact[$0].rounded(.down) > exact[$1] - exact[$1].rounded(.down)
+        }) {
+            guard leftover > 0 else { break }
+            percents[i] += 1
+            leftover -= 1
+        }
+        return percents
     }
 }

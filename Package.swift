@@ -8,6 +8,13 @@ let package = Package(
         .executableTarget(
             name: "RAMMonitor",
             path: "Sources/RAMMonitor"
-        )
+        ),
+        // `tests/` (lowercase) because the harness already made that folder and
+        // the Mac's file system ignores case.
+        .testTarget(
+            name: "RAMMonitorTests",
+            dependencies: ["RAMMonitor"],
+            path: "tests/RAMMonitorTests"
+        ),
     ]
 )

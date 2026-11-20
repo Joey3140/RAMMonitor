@@ -37,6 +37,11 @@ struct ProcessMemoryInfo: Identifiable {
             proc_name(pid, &nameBuffer, 256)
             name = String(cString: nameBuffer)
         }
+        return label(for: name)
+    }
+
+    /// The menu label for an executable name.
+    static func label(for name: String) -> String {
         if let friendly = friendlyNames[name] { return friendly }
         // Generic reverse-DNS names read badly in a menu — show the last component.
         if name.hasPrefix("com.apple."), let tail = name.split(separator: ".").last {
@@ -54,8 +59,7 @@ struct ProcessMemoryInfo: Identifiable {
         let actualCount = proc_listallpids(&pids, bufferSize)
         guard actualCount > 0 else { return [] }
 
-        var processes: [ProcessMemoryInfo] = []
-        var indexByName: [String: Int] = [:]   // O(1) name->index for the merge below
+        var samples: [(name: String, memory: UInt64)] = []
 
         for i in 0..<Int(actualCount) {
             let pid = pids[i]
@@ -77,8 +81,17 @@ struct ProcessMemoryInfo: Identifiable {
 
             let name = displayName(for: pid)
             if name.isEmpty { continue }
+            samples.append((name, memory))
+        }
 
-            // Merge processes with same name (e.g., multiple Chrome helpers)
+        return merged(samples, limit: limit)
+    }
+
+    /// Merge processes with the same name (e.g., multiple Chrome helpers), largest first.
+    static func merged(_ samples: [(name: String, memory: UInt64)], limit: Int) -> [ProcessMemoryInfo] {
+        var processes: [ProcessMemoryInfo] = []
+        var indexByName: [String: Int] = [:]   // O(1) name->index for the merge
+        for (name, memory) in samples {
             if let idx = indexByName[name] {
                 processes[idx] = ProcessMemoryInfo(
                     name: name,
@@ -89,7 +102,6 @@ struct ProcessMemoryInfo: Identifiable {
                 processes.append(ProcessMemoryInfo(name: name, memory: memory))
             }
         }
-
         processes.sort { $0.memory > $1.memory }
         return Array(processes.prefix(limit))
     }

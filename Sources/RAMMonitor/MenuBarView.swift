@@ -194,26 +194,7 @@ struct MenuBarView: View {
         }
     }
 
-    /// Integer percentages for the five legend rows, in display order.
-    /// Largest-remainder rounding over the category sum so they total exactly 100
-    /// (independent rounding could show 99 or 101).
-    private var legendPercents: [Int] {
-        let values = [memoryInfo.appMemory, memoryInfo.wired, memoryInfo.compressed,
-                      memoryInfo.cached, memoryInfo.free]
-        let total = Double(values.reduce(0, +))
-        guard total > 0 else { return Array(repeating: 0, count: values.count) }
-        let exact = values.map { Double($0) / total * 100 }
-        var percents = exact.map { Int($0.rounded(.down)) }
-        var leftover = 100 - percents.reduce(0, +)
-        for i in exact.indices.sorted(by: {
-            exact[$0] - exact[$0].rounded(.down) > exact[$1] - exact[$1].rounded(.down)
-        }) {
-            guard leftover > 0 else { break }
-            percents[i] += 1
-            leftover -= 1
-        }
-        return percents
-    }
+    private var legendPercents: [Int] { memoryInfo.legendPercents }
 
     private func legendRow(_ name: String, bytes: UInt64, percent: Int, color: Color, tooltip: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {

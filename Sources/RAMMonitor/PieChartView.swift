@@ -23,6 +23,11 @@ struct PieChartView: View {
     }
 
     private func findCategory(at location: CGPoint, in plot: CGRect) -> String? {
+        Self.category(at: location, in: plot, slices: slices)
+    }
+
+    /// The slice under a tap on the donut, or nil for the hole and outside the ring.
+    static func category(at location: CGPoint, in plot: CGRect, slices: [MemorySlice]) -> String? {
         let center = CGPoint(x: plot.midX, y: plot.midY)
         let dx = location.x - center.x
         let dy = location.y - center.y
